@@ -12,7 +12,7 @@ from typing import List, Optional
 
 import requests
 
-from src.config import OLLAMA_BASE_URL, GENERATION_MODEL, PROMPTS_DIR
+from src.config import OLLAMA_BASE_URL, GENERATION_MODEL, PROMPTS_DIR, OPENAI_API_KEY, OPENAI_MODEL
 from src.retriever import RetrievalResult, ScoredChunk
 from src.utils import get_logger, truncate
 
@@ -127,11 +127,15 @@ def generate_answer(
     try:
         llm_answer = _call_ollama(system_prompt, user_message)
     except Exception as e:
-        log.error("Ollama generation failed: %s", e)
-        llm_answer = (
-            "[LLM generation failed — showing retrieved evidence only]\n"
-            + context[:2000]
-        )
+        log.warning("Ollama generation failed (%s), falling back to OpenAI", e)
+        try:
+            llm_answer = _call_openai(system_prompt, user_message)
+        except Exception as e2:
+            log.error("OpenAI fallback also failed: %s", e2)
+            llm_answer = (
+                "[LLM generation failed — showing retrieved evidence only]\n"
+                + context[:2000]
+            )
 
     # Append grounding footer
     footer = _build_grounding_footer(result.ranked)
@@ -161,6 +165,29 @@ def _call_ollama(system: str, user: str) -> str:
 
     data = resp.json()
     return data["message"]["content"].strip()
+
+
+def _call_openai(system: str, user: str) -> str:
+    if not OPENAI_API_KEY:
+        raise RuntimeError("OPENAI_API_KEY is not set")
+    payload = {
+        "model": OPENAI_MODEL,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user",   "content": user},
+        ],
+        "temperature": 0.1,
+        "max_tokens": 1024,
+    }
+    resp = requests.post(
+        "https://api.openai.com/v1/chat/completions",
+        headers={"Authorization": f"Bearer {OPENAI_API_KEY}", "Content-Type": "application/json"},
+        json=payload,
+        timeout=60,
+    )
+    if resp.status_code != 200:
+        raise RuntimeError(f"OpenAI API returned {resp.status_code}: {resp.text[:300]}")
+    return resp.json()["choices"][0]["message"]["content"].strip()
 
 
 def _build_grounding_footer(ranked: List[ScoredChunk]) -> str:

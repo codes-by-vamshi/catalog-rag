@@ -34,6 +34,10 @@ OLLAMA_BASE_URL    = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 GENERATION_MODEL   = os.getenv("GENERATION_MODEL", "llama3.1:8b")
 EMBEDDING_MODEL    = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
 
+# ── OpenAI fallback ────────────────────────────────────────────────────────────
+OPENAI_API_KEY       = os.getenv("OPENAI_API_KEY", "")
+OPENAI_MODEL         = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+
 # ── Retrieval ──────────────────────────────────────────────────────────────────
 TOP_K_VECTOR     = int(os.getenv("TOP_K_VECTOR", "15"))
 TOP_K_BM25       = int(os.getenv("TOP_K_BM25", "15"))
