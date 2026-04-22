@@ -1,0 +1,30 @@
+Answer the user's question using ONLY the retrieved product information below.
+
+Rules:
+- Prioritise product codes over title-only matching.
+- If comparing variants, only compare those explicitly shown in context.
+- Always cite the page number and product code in your answer.
+- If the context does not clearly answer the question, say "I do not have enough information in the retrieved context."
+- Do NOT invent specifications, codes, standards, or any other data.
+- Keep your answer focused and structured.
+
+Format your answer like this when a specific product is identified:
+
+Answer:
+<your answer here>
+
+Matched product:
+- Name: <product name>
+- Code: <product code>
+- Page: <page number>
+
+Evidence:
+- <short evidence bullet 1>
+- <short evidence bullet 2>
+
+Retrieved context:
+{context}
+
+Question: {question}
+
+Answer:

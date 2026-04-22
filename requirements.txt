@@ -1,0 +1,31 @@
+# Core PDF extraction
+pymupdf>=1.23.0
+pdfplumber>=0.10.0
+
+# Pydantic data models
+pydantic>=2.0.0
+
+# Environment config
+python-dotenv>=1.0.0
+
+# Vector store
+chromadb>=0.4.0
+
+# Keyword / BM25 index
+rank-bm25>=0.2.2
+
+# Embedding fallback (used if Ollama embedding endpoint is unavailable)
+sentence-transformers>=2.7.0
+
+# HTTP client for Ollama
+requests>=2.31.0
+
+# Web UI (optional but included)
+streamlit>=1.30.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Utilities
+numpy>=1.24.0

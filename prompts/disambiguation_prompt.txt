@@ -1,0 +1,12 @@
+The query matches multiple products in the catalogue. Do not guess which one the user means.
+
+List the candidates clearly and ask the user to choose by product code or variant suffix.
+
+Format:
+I found multiple close matches for your query. Please specify which product you mean:
+
+1. <Product Name> — <Product Code> — Page <N>
+2. <Product Name> — <Product Code> — Page <N>
+...
+
+Please re-ask your question with the specific product code (e.g. "36-5150/01") to get a precise answer.
