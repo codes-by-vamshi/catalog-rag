@@ -8,7 +8,7 @@ import unicodedata
 from typing import List, Optional, Tuple
 
 # Product code pattern: DD-DDDD or DD-DDDD/DD (also handles longer suffixes)
-PRODUCT_CODE_RE = re.compile(r"\b(\d{2}-\d{4,5})(?:/(\d{2,3}))?\b")
+PRODUCT_CODE_RE = re.compile(r"\b(\d{2,3}-\d{3,5})(?:/(\d{2,3}))?\b")
 
 # Standards markers to optionally strip from titles
 STANDARDS_RE = re.compile(
